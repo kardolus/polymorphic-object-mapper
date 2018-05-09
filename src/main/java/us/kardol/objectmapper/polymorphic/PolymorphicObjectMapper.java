@@ -1,3 +1,5 @@
+package us.kardol.objectmapper.polymorphic;
+
 import com.google.gson.Gson;
 
 import java.beans.IntrospectionException;
@@ -26,6 +28,10 @@ public class PolymorphicObjectMapper {
       if(isMatch){
         result = tmp;
       }
+    }
+
+    if(result == null){
+      throw new MappingException("Unable to map object");
     }
 
     return result;
