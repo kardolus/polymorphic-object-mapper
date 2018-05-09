@@ -26,14 +26,10 @@ public class PolymorphicObjectMapper {
       }
 
       if(isMatch){
-        result = tmp;
+        return result;
       }
     }
-
-    if(result != null){
-      return result;
-    }
-
+    
     throw new MappingException("Unable to map object");
   }
 }
