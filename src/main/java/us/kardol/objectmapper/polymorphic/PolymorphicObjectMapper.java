@@ -30,10 +30,10 @@ public class PolymorphicObjectMapper {
       }
     }
 
-    if(result == null){
-      throw new MappingException("Unable to map object");
+    if(result != null){
+      return result;
     }
 
-    return result;
+    throw new MappingException("Unable to map object");
   }
 }
