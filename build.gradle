@@ -1,5 +1,5 @@
-group 'io.pivotal.deserialize.test'
-version '1.0-SNAPSHOT'
+group 'us.kardol.objectmapper'
+version '1.0'
 
 apply plugin: 'java'
 
