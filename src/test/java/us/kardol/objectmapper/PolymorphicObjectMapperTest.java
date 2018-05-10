@@ -1,10 +1,10 @@
-package us.kardol.objectmapper.polymorphic;
+package us.kardol.objectmapper;
 
 import org.junit.Before;
 import org.junit.Test;
-import us.kardol.objectmapper.polymorphic.entity.Animal;
-import us.kardol.objectmapper.polymorphic.entity.Cat;
-import us.kardol.objectmapper.polymorphic.entity.Dog;
+import us.kardol.objectmapper.entity.Animal;
+import us.kardol.objectmapper.entity.Cat;
+import us.kardol.objectmapper.entity.Dog;
 
 import java.util.ArrayList;
 import java.util.List;

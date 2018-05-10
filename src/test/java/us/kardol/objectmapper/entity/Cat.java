@@ -1,4 +1,4 @@
-package us.kardol.objectmapper.polymorphic.entity;
+package us.kardol.objectmapper.entity;
 
 import com.google.gson.Gson;
 

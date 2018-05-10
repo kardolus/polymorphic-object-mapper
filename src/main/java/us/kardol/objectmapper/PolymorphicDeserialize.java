@@ -1,4 +1,4 @@
-package us.kardol.objectmapper.polymorphic;
+package us.kardol.objectmapper;
 
 
 import java.lang.annotation.ElementType;
