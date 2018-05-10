@@ -1,10 +1,10 @@
 package us.kardol.objectmapper.polymorphic;
 
+import org.junit.Before;
+import org.junit.Test;
 import us.kardol.objectmapper.polymorphic.entity.Animal;
 import us.kardol.objectmapper.polymorphic.entity.Cat;
 import us.kardol.objectmapper.polymorphic.entity.Dog;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +48,14 @@ public class PolymorphicObjectMapperTest {
   public void mapperShouldThrowAnExceptionIfFieldsAreMissing() throws Exception{
     jsonInString = "{'name' : 'Persol'}";
     result = subject.fromJson(jsonInString, animals);
+  }
+
+  @Test
+  public void mappingAnnotatedClassesShouldParseListOfCandidates() throws Exception{
+    jsonInString = "{'name' : 'Persol', 'age' : 14}";
+    result = subject.fromJson(jsonInString, Animal.class);
+    Dog dog = (Dog) result;
+    assertThat(dog.getName(), is(equalTo("Persol")));
+    assertThat(dog.getAge(), is(14));
   }
 }
