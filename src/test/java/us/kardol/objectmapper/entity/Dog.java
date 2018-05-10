@@ -2,7 +2,7 @@ package us.kardol.objectmapper.entity;
 
 import com.google.gson.Gson;
 
-public class Dog implements Animal{
+public class Dog implements Animal, Creature{
   private String name;
   private Integer age;
 

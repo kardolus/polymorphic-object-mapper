@@ -2,7 +2,7 @@ package us.kardol.objectmapper.entity;
 
 import com.google.gson.Gson;
 
-public class Cat implements Animal {
+public class Cat implements Animal, Creature {
   private String color;
 
   public String getColor() {

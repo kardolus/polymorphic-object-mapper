@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import us.kardol.objectmapper.entity.Animal;
 import us.kardol.objectmapper.entity.Cat;
+import us.kardol.objectmapper.entity.Creature;
 import us.kardol.objectmapper.entity.Dog;
 
 import java.util.ArrayList;
@@ -55,6 +56,15 @@ public class PolymorphicObjectMapperTest {
     jsonInString = "{'name' : 'Persol', 'age' : 14}";
     result = subject.fromJson(jsonInString, Animal.class);
     Dog dog = (Dog) result;
+    assertThat(dog.getName(), is(equalTo("Persol")));
+    assertThat(dog.getAge(), is(14));
+  }
+
+  @Test
+  public void mappingAnnotatedClassesShouldParseListOfCandidatesWhenClassesAreOmitted() throws Exception{
+    jsonInString = "{'name' : 'Persol', 'age' : 14}";
+    Creature creature = subject.fromJson(jsonInString, Creature.class);
+    Dog dog = (Dog) creature;
     assertThat(dog.getName(), is(equalTo("Persol")));
     assertThat(dog.getAge(), is(14));
   }

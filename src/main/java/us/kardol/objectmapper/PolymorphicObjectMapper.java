@@ -1,6 +1,7 @@
 package us.kardol.objectmapper;
 
 import com.google.gson.Gson;
+import org.reflections.Reflections;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -11,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PolymorphicObjectMapper {
 
@@ -41,20 +43,22 @@ public class PolymorphicObjectMapper {
     throw new MappingException("Unable to map object");
   }
 
-  public <T> T fromJson(String json, Class<T> clazz) throws IntrospectionException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+  public <T> T fromJson(String json, Class<T> interfaze) throws IntrospectionException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
     List<T> classes = new ArrayList<>();
 
-    for (Annotation annotation : clazz.getAnnotations()) {
+    for (Annotation annotation : interfaze.getAnnotations()) {
       Class<? extends Annotation> type = annotation.annotationType();
-      System.out.println("Values of " + type.getName());
 
       for (Method method : type.getDeclaredMethods()) {
         Object value = method.invoke(annotation, (Object[])null);
-        System.out.println(" " + method.getName() + ":");
+        Class[] clazzes = (Class[]) value;
 
-        for(Class klass : (Class[]) value){
-          System.out.println("  " + klass.getName());
-          Constructor<?> constructor = klass.getConstructor();
+        if(clazzes.length == 1 && clazzes[0].getName().equals("java.lang.Object")){
+          return fromJsonUsingAllImplementations(json, interfaze);
+        }
+
+        for(Class clazz : clazzes){
+          Constructor<?> constructor = clazz.getConstructor();
           T object = (T) constructor.newInstance();
           classes.add(object);
         }
@@ -63,4 +67,20 @@ public class PolymorphicObjectMapper {
 
     return this.fromJson(json, classes);
   }
+
+  private <T> T fromJsonUsingAllImplementations(String json, Class<T> interfaze) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+    List<T> classes = new ArrayList<>();
+    Reflections reflections = new Reflections("us.kardol");
+    Set<Class<? extends T>> implementors = reflections.getSubTypesOf(interfaze);
+
+    for(Class clazz : implementors){
+      Constructor<?> constructor = clazz.getConstructor();
+      T object = (T) constructor.newInstance();
+      classes.add(object);
+    }
+
+    return this.fromJson(json, classes);
+  }
+
+
 }
