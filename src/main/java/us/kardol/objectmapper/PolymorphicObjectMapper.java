@@ -49,7 +49,7 @@ public class PolymorphicObjectMapper {
         Object value = method.invoke(annotation, (Object[])null);
         Class[] clazzes = (Class[]) value;
 
-        if(clazzes.length == 1 && clazzes[0].getName().equals("java.lang.Object")){
+        if(clazzes.length == 1 && clazzes[0].equals(PolymorphicDeserialize.DEFAULT_CLASS)){
           return fromJsonUsingAllImplementations(json, interfaze);
         }
 

@@ -9,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface PolymorphicDeserialize {
+   Class DEFAULT_CLASS = Object.class;
+
    Class<? extends Object>[] classes() default Object.class;
 }
