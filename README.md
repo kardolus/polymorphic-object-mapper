@@ -1,18 +1,12 @@
 # PolymorphicObjectMapper
-This library was originally created to limit the number of null-objects floating around in your Spring container. 
+This library was originally created to limit the number of nulls floating around in your Java program. It enables you to deserialize a Json string using interfaces rather than classes.
 
 You can either use a list of objects (with a common ancestor) to get its concrete implementor using `fromJson(String json, List objects)` or you can annotate your interface with `@PolymorphicDeserialize` and use the method `fromJson(String json, Class<T> interface)` instead. 
 
-The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates rather. When omitted the objectmapper will try all possible implementors. 
-
-Pass a List of objects that implement the same interface and a json string to the PolymorphicObjectMapper and it will determine which concrete type to deserialize the Json to. 
+The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates. This allows you to limit the implementors that will be considered for deserialization; like a filter. 
 
 Roadmap:
-- Annotate an interface with `@PolymorphicDeserialize(classes = {Cat.class, Dog.class, Canary.class})`
-- When classes are omitted, use the JVM to find all implementations of an Interface
-- This annotation will disable the standard Jackson deserialization
-- The list of classes will then be passed to a new class that extends StdSerializer
-- The StdSerializer then calls the PolyMorphicObjectMapper
+- `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization used by the Spring Framework
 
 Resources:
 - Custom annotations: https://dzone.com/articles/creating-custom-annotations-in-java
