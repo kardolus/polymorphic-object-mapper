@@ -17,29 +17,24 @@ import java.util.Set;
 public class PolymorphicObjectMapper {
 
   public <T> T fromJson(String json, List<T> classes) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-    T result = null;
     Boolean isMatch;
 
     for(T clazz : classes){
-      T tmp = (T) new Gson().fromJson(json, clazz.getClass());
+      T result = (T) new Gson().fromJson(json, clazz.getClass());
       isMatch = true;
 
       for(PropertyDescriptor propertyDescriptor :
-          Introspector.getBeanInfo(tmp.getClass()).getPropertyDescriptors()){
-        if(propertyDescriptor.getReadMethod().invoke(tmp) == null){
+          Introspector.getBeanInfo(result.getClass()).getPropertyDescriptors()){
+        if(propertyDescriptor.getReadMethod().invoke(result) == null){
           isMatch = false;
         }
       }
 
-      if(isMatch){
-        result = tmp;
+      if(isMatch & classes.size() > 0){
+        return result;
       }
     }
 
-    if(result != null){
-      return result;
-    }
-    
     throw new MappingException("Unable to map object");
   }
 
