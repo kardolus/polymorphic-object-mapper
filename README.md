@@ -6,11 +6,7 @@ You can either use a list of objects (with a common ancestor) to get its concret
 The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates. This allows you to limit the implementors that will be considered for deserialization; like a filter. 
 
 Roadmap:
-- Annotate an interface with `@PolymorphicDeserialize(classes = {Cat.class, Dog.class, Canary.class})`
-- When classes are omitted, use the JVM to find all implementations of an Interface
-- This annotation will disable the standard Jackson deserialization
-- The list of classes will then be passed to a new class that extends StdSerializer
-- The StdSerializer then calls the PolyMorphicObjectMapper
+- `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization
 
 Resources:
 - Custom annotations: https://dzone.com/articles/creating-custom-annotations-in-java
