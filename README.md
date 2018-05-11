@@ -3,7 +3,7 @@ This library was originally created to limit the number of nulls floating around
 
 You can either use a list of objects (with a common ancestor) to get its concrete implementor using `fromJson(String json, List objects)` or you can annotate your interface with `@PolymorphicDeserialize` and use the method `fromJson(String json, Class<T> interface)` instead. 
 
-The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates rather then using all of the implementors.
+The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates. This allows you to limit the implementors that will be considered for deserialization; like a filter. 
 
 Roadmap:
 - Annotate an interface with `@PolymorphicDeserialize(classes = {Cat.class, Dog.class, Canary.class})`
