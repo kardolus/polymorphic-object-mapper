@@ -46,10 +46,6 @@ public class PolymorphicObjectMapper {
       Class<? extends Annotation> type = annotation.annotationType();
 
       for (Method method : type.getDeclaredMethods()) {
-        if((!method.getName().equals(PolymorphicDeserialize.CLASSES_METHOD)
-            && !method.getName().equals(PolymorphicDeserialize.BASEPACKAGE_METHOD))){
-          continue;
-        }
         if(method.getName().equals(PolymorphicDeserialize.BASEPACKAGE_METHOD)){
           Object value = method.invoke(annotation, (Object[])null);
           String basePackage = (String) value;
