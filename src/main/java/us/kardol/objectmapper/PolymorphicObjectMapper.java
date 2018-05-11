@@ -17,10 +17,10 @@ import java.util.Set;
 public class PolymorphicObjectMapper {
   private static final String GROUP_ID = "us.kardol.objectmapper";
 
-  public <T> T fromJson(String json, List<T> classes) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+  public <T> T fromJson(String json, List<T> candidates) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     Boolean isMatch;
 
-    for(T clazz : classes){
+    for(T clazz : candidates){
       T result = (T) new Gson().fromJson(json, clazz.getClass());
       isMatch = true;
 
@@ -31,7 +31,7 @@ public class PolymorphicObjectMapper {
         }
       }
 
-      if(isMatch & classes.size() > 0){
+      if(isMatch & candidates.size() > 0){
         return result;
       }
     }
@@ -40,42 +40,42 @@ public class PolymorphicObjectMapper {
   }
 
   public <T> T fromJson(String json, Class<T> interfaze) throws IntrospectionException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-    List<T> classes = new ArrayList<>();
+    List<T> candidates = new ArrayList<>();
 
     for (Annotation annotation : interfaze.getAnnotations()) {
       Class<? extends Annotation> type = annotation.annotationType();
 
       for (Method method : type.getDeclaredMethods()) {
         Object value = method.invoke(annotation, (Object[])null);
-        Class[] clazzes = (Class[]) value;
+        Class[] classes = (Class[]) value;
 
-        if(clazzes.length == 1 && clazzes[0].equals(PolymorphicDeserialize.DEFAULT_CLASS)){
+        if(classes.length == 1 && classes[0].equals(PolymorphicDeserialize.DEFAULT_CLASS)){
           return fromJsonUsingAllImplementations(json, interfaze);
         }
 
-        for(Class clazz : clazzes){
+        for(Class clazz : classes){
           Constructor<?> constructor = clazz.getConstructor();
           T object = (T) constructor.newInstance();
-          classes.add(object);
+          candidates.add(object);
         }
       }
     }
 
-    return this.fromJson(json, classes);
+    return this.fromJson(json, candidates);
   }
 
   private <T> T fromJsonUsingAllImplementations(String json, Class<T> interfaze) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException, NoSuchMethodException {
-    List<T> classes = new ArrayList<>();
+    List<T> candidates = new ArrayList<>();
     Reflections reflections = new Reflections(GROUP_ID);
     Set<Class<? extends T>> implementors = reflections.getSubTypesOf(interfaze);
 
     for(Class clazz : implementors){
       Constructor<?> constructor = clazz.getConstructor();
       T object = (T) constructor.newInstance();
-      classes.add(object);
+      candidates.add(object);
     }
 
-    return this.fromJson(json, classes);
+    return this.fromJson(json, candidates);
   }
 
 
