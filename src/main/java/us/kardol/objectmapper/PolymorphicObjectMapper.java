@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 public class PolymorphicObjectMapper {
-  private static final String GROUP_ID = "us.kardol.objectmapper";
-
   public <T> T fromJson(String json, List<T> candidates) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     Boolean isMatch;
 
@@ -66,7 +64,8 @@ public class PolymorphicObjectMapper {
 
   private <T> T fromJsonUsingAllImplementations(String json, Class<T> interfaze) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException, NoSuchMethodException {
     List<T> candidates = new ArrayList<>();
-    Reflections reflections = new Reflections(GROUP_ID);
+    Package pack = interfaze.getPackage();
+    Reflections reflections = new Reflections(pack.getName());
     Set<Class<? extends T>> implementors = reflections.getSubTypesOf(interfaze);
 
     for(Class clazz : implementors){
