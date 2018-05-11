@@ -29,7 +29,7 @@ public class PolymorphicObjectMapper {
         }
       }
 
-      if(isMatch & candidates.size() > 0){
+      if(isMatch){
         return result;
       }
     }
