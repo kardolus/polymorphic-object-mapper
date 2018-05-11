@@ -39,16 +39,35 @@ public class PolymorphicObjectMapper {
 
   public <T> T fromJson(String json, Class<T> interfaze) throws IntrospectionException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
     List<T> candidates = new ArrayList<>();
+    Boolean hasClassesAnnotation = true;
+    Boolean hasBasePackageAnnotation = false;
 
     for (Annotation annotation : interfaze.getAnnotations()) {
       Class<? extends Annotation> type = annotation.annotationType();
 
       for (Method method : type.getDeclaredMethods()) {
+        if((!method.getName().equals(PolymorphicDeserialize.CLASSES_METHOD)
+            && !method.getName().equals(PolymorphicDeserialize.BASEPACKAGE_METHOD))){
+          continue;
+        }
+        if(method.getName().equals(PolymorphicDeserialize.BASEPACKAGE_METHOD)){
+          Object value = method.invoke(annotation, (Object[])null);
+          String basePackage = (String) value;
+          if(basePackage.equals(PolymorphicDeserialize.DEFAULT_BASEPACKAGE)){
+            hasBasePackageAnnotation = false;
+            continue;
+          }
+          hasBasePackageAnnotation = true;
+          candidates.addAll(findImplementors(interfaze, basePackage));
+          continue;
+        }
+
         Object value = method.invoke(annotation, (Object[])null);
         Class[] classes = (Class[]) value;
 
         if(classes.length == 1 && classes[0].equals(PolymorphicDeserialize.DEFAULT_CLASS)){
-          return fromJsonUsingAllImplementations(json, interfaze);
+          hasClassesAnnotation = false;
+          continue;
         }
 
         for(Class clazz : classes){
@@ -59,13 +78,22 @@ public class PolymorphicObjectMapper {
       }
     }
 
+    if(candidates.size() == 0 && !hasClassesAnnotation && !hasBasePackageAnnotation){
+      return fromJsonUsingAllImplementations(json, interfaze);
+    }
+
     return this.fromJson(json, candidates);
   }
 
   private <T> T fromJsonUsingAllImplementations(String json, Class<T> interfaze) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException, NoSuchMethodException {
-    List<T> candidates = new ArrayList<>();
     Package pack = interfaze.getPackage();
-    Reflections reflections = new Reflections(pack.getName());
+    List<T> candidates = this.findImplementors(interfaze, pack.getName());
+    return this.fromJson(json, candidates);
+  }
+
+  private <T> List<T> findImplementors(Class<T> interfaze, String basePackage) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    List<T> candidates = new ArrayList<>();
+    Reflections reflections = new Reflections(basePackage);
     Set<Class<? extends T>> implementors = reflections.getSubTypesOf(interfaze);
 
     for(Class clazz : implementors){
@@ -73,8 +101,7 @@ public class PolymorphicObjectMapper {
       T object = (T) constructor.newInstance();
       candidates.add(object);
     }
-
-    return this.fromJson(json, candidates);
+    return candidates;
   }
 
 

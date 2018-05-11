@@ -1,8 +1,9 @@
 package us.kardol.objectmapper.entity;
 
 import com.google.gson.Gson;
+import us.kardol.objectmapper.entity.subentity.Pet;
 
-public class Dog implements Animal, Creature{
+public class Dog implements Animal, Creature, Pet {
   private String name;
   private Integer age;
 

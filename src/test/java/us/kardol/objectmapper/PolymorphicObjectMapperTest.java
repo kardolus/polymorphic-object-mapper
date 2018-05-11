@@ -6,6 +6,8 @@ import us.kardol.objectmapper.entity.Animal;
 import us.kardol.objectmapper.entity.Cat;
 import us.kardol.objectmapper.entity.Creature;
 import us.kardol.objectmapper.entity.Dog;
+import us.kardol.objectmapper.entity.subentity.HiggsBoson;
+import us.kardol.objectmapper.entity.subentity.Pet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,21 @@ public class PolymorphicObjectMapperTest {
     jsonInString = "{'name' : 'Persol', 'age' : 14}";
     Creature creature = subject.fromJson(jsonInString, Creature.class);
     Dog dog = (Dog) creature;
+    assertThat(dog.getName(), is(equalTo("Persol")));
+    assertThat(dog.getAge(), is(14));
+  }
+
+  @Test(expected = MappingException.class)
+  public void componentScanShouldFailWhenClassesNotInSameBasePackageAsInterface() throws Exception{
+    jsonInString = "{'name' : 'Persol', 'age' : 14}";
+    HiggsBoson boson = subject.fromJson(jsonInString, HiggsBoson.class);
+  }
+
+  @Test
+  public void componentScanShouldSucceedWhenBasePackageIsSet() throws Exception{
+    jsonInString = "{'name' : 'Persol', 'age' : 14}";
+    Pet pet = subject.fromJson(jsonInString, Pet.class);
+    Dog dog = (Dog) pet;
     assertThat(dog.getName(), is(equalTo("Persol")));
     assertThat(dog.getAge(), is(14));
   }
