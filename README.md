@@ -1,5 +1,5 @@
-# PolymorphicObjectMapper
-This library was originally created to limit the number of nulls floating around in your Java program. It enables you to deserialize a Json string using interfaces rather than classes.
+# Polymorphic ObjectMapper
+This library was originally created to limit the number of nulls that usually float around in a Java program. It enables you to deserialize a Json string using interfaces rather than classes.
 
 You can either use a list of objects (with a common ancestor) to get its concrete implementor using `fromJson(String json, List objects)` or you can annotate your interface with `@PolymorphicDeserialize` and use the method `fromJson(String json, Class<T> interface)` instead. 
 
