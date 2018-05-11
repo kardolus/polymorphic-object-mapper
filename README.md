@@ -6,7 +6,7 @@ You can either use a list of objects (with a common ancestor) to get its concret
 The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates. This allows you to limit the implementors that will be considered for deserialization; like a filter. 
 
 Roadmap:
-- `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization
+- `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization used by the Spring Framework
 
 Resources:
 - Custom annotations: https://dzone.com/articles/creating-custom-annotations-in-java
