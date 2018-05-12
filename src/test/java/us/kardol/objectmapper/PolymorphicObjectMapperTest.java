@@ -9,8 +9,8 @@ import us.kardol.objectmapper.entity.Dog;
 import us.kardol.objectmapper.entity.subentity.HiggsBoson;
 import us.kardol.objectmapper.entity.subentity.Pet;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -20,12 +20,12 @@ public class PolymorphicObjectMapperTest {
   private PolymorphicObjectMapper subject;
   private String jsonInString;
   private Animal result;
-  private List<Animal> animals;
+  private Set<Animal> animals;
 
   @Before
   public void setUp(){
     subject = new PolymorphicObjectMapper();
-    animals = new ArrayList<>();
+    animals = new HashSet<>();
     animals.add(new Dog());
     animals.add(new Cat());
   }

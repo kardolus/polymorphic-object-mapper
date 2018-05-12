@@ -10,12 +10,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 public class PolymorphicObjectMapper {
-  public <T> T fromJson(String json, List<T> candidates) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+  public <T> T fromJson(String json, Set<T> candidates) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     Boolean isMatch;
 
     for(T clazz : candidates){
@@ -38,7 +37,7 @@ public class PolymorphicObjectMapper {
   }
 
   public <T> T fromJson(String json, Class<T> interfaze) throws IntrospectionException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-    List<T> candidates = new ArrayList<>();
+    Set<T> candidates = new HashSet<>();
     Boolean hasClassesAnnotation = true;
     Boolean hasBasePackageAnnotation = false;
 
@@ -84,12 +83,12 @@ public class PolymorphicObjectMapper {
 
   private <T> T fromJsonUsingAllImplementations(String json, Class<T> interfaze) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException, NoSuchMethodException {
     Package pack = interfaze.getPackage();
-    List<T> candidates = this.findImplementors(interfaze, pack.getName());
+    Set<T> candidates = this.findImplementors(interfaze, pack.getName());
     return this.fromJson(json, candidates);
   }
 
-  private <T> List<T> findImplementors(Class<T> interfaze, String basePackage) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-    List<T> candidates = new ArrayList<>();
+  private <T> Set<T> findImplementors(Class<T> interfaze, String basePackage) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    Set<T> candidates = new HashSet<>();
     Reflections reflections = new Reflections(basePackage);
     Set<Class<? extends T>> implementors = reflections.getSubTypesOf(interfaze);
 
