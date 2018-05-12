@@ -6,6 +6,8 @@ You can either use a list of objects (with a common ancestor) to get its concret
 The annotation `@PolymorphicDeserialize` takes an optional argument `classes` that can be used to provide a list of candidates, and an optional argument called `basePackage` which is used to specify the basePackage of your component scan. The `classes` method allows you to limit the implementors that will be considered for deserialization; like a filter. Omitting the `classes` and `basePackage` arguments will cause a scan of all the classes that are in the same package as the interface itself, including sub packages. If the interface is not in the same package structure as the candidate classes you have to explicitly specify them or you will have to use the `basePackage` annotation to scan the specified package for implementors. Component scans are recursive. 
 
 Roadmap:
+- Allow null values through method level annotation
+- Return "best match" rather than first match. Best match has the most matching fields of all scanned classes
 - `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization used by the Spring Framework
 
 Resources:
