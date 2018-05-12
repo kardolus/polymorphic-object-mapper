@@ -49,6 +49,7 @@ public class PolymorphicObjectMapper {
         if(method.getName().equals(PolymorphicDeserialize.BASEPACKAGE_METHOD)){
           Object value = method.invoke(annotation, (Object[])null);
           String basePackage = (String) value;
+
           if(basePackage.equals(PolymorphicDeserialize.DEFAULT_BASEPACKAGE)){
             hasBasePackageAnnotation = false;
             continue;
@@ -99,6 +100,4 @@ public class PolymorphicObjectMapper {
     }
     return candidates;
   }
-
-
 }
