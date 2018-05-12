@@ -10,7 +10,7 @@ Roadmap:
 - Return "best match" rather than first match. Best match has the most matching fields of all scanned classes
 - `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization used by the Spring Framework
 - Squash commits
-- Commit project to maven central
+- Publish project to maven central
 
 Resources:
 - Custom annotations: https://dzone.com/articles/creating-custom-annotations-in-java
