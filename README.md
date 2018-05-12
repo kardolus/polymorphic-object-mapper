@@ -9,8 +9,11 @@ Roadmap:
 - Allow null values through method level annotation
 - Return "best match" rather than first match. Best match has the most matching fields of all scanned classes
 - `@PolymorphicDeserialize` annotation should disable the standard Jackson deserialization used by the Spring Framework
+- Squash commits
+- Commit project to maven central
 
 Resources:
 - Custom annotations: https://dzone.com/articles/creating-custom-annotations-in-java
 - Extend StdSerializer - see http://www.baeldung.com/jackson-deserialization 
 - Interface Implementations: https://stackoverflow.com/questions/347248/how-can-i-get-a-list-of-all-the-implementations-of-an-interface-programmatically
+- Maven publishing: https://docs.gradle.org/current/userguide/publishing_maven.html
